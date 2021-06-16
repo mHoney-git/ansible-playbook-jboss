@@ -1,0 +1,32 @@
+---
+  - name: Install and configure Jboss
+    hosts: webservers
+    gather_facts: false
+    become: yes
+    tasks:
+      - name: Updating all necessary repositories
+        yum:
+          name: "*"
+          state: latest
+      - name: Installing required java
+        yum:
+          name: java-1.8.0-openjdk
+          state: present
+      - name: Downloading jboss
+        get_url:
+          url: https://sourceforge.net/projects/jboss/files/JBoss/JBoss-4.2.3.GA/jboss-4.2.3.GA-jdk6.zip
+          dest: /usr/local
+      - name: Extracting/Unzipping downloaded jboss
+        unarchive:
+          src: "/usr/local/jboss-4.2.3.GA-jdk6.zip"
+          dest: /usr/local
+          remote_src: yes
+
+      # - name: Installing jboss from the website
+      #   import_role: 
+      #     name: devopstoolbox.jboss
+      #   vars:
+      #     jboss_enable_service: true 
+      #   tags: jboss
+
+        
